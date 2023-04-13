@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Composer;
 use App\Repository\ComposerRepository;
-use http\Client\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ComposerController extends AbstractController
 {
@@ -26,16 +28,21 @@ class ComposerController extends AbstractController
     }
 
     #[Route('/composer', name: 'app_composer_create', methods: ['POST'])]
-    public function create(ComposerRepository $repo, Request $request): JsonResponse
+    public function create(ComposerRepository $repo,SerializerInterface $serializer, Request $request): JsonResponse
     {
-        return $this->json();
+        $composer = $serializer->deserialize($request->getContent(), Composer::class, 'json', []);
+        $repo->save($composer, true);
+        return $this->json($composer, 201);
     }
 
     #[Route('/composer/{id}', name: 'app_composer_update', methods: ['PUT'])]
-    public function update(ComposerRepository $repo): JsonResponse
+    public function update(ComposerRepository $repo, SerializerInterface $serializer, Composer $composer, Request $request): JsonResponse
     {
-
-        return $this->json($repo->findAll());
+        $composer = $serializer->deserialize($request->getContent(), Composer::class, 'json', [
+            AbstractNormalizer::OBJECT_TO_POPULATE => $composer
+        ]);
+        $repo->save($composer, true);
+        return $this->json($composer);
     }
 
     #[Route('/composer/{id}', name: 'app_composer_delete', methods: ['DELETE'])]
