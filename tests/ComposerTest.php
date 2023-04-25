@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-use PHPUnit\Framework\Attributes\Depends;
 
 
 class ComposerTest extends AbstractApiTest
@@ -25,7 +24,9 @@ class ComposerTest extends AbstractApiTest
         static::$testComposer['id'] = $json['id'];
     }
 
-    #[Depends('testCreate')]
+    /**
+     * @depends testCreate
+     */
     public function testIndex(): void
     {
         $response = $this->get('/composer');
@@ -36,7 +37,9 @@ class ComposerTest extends AbstractApiTest
         $this->assertTrue(in_array(static::$testComposer, $json));
     }
 
-    #[Depends('testCreate')]
+    /**
+     * @depends testCreate
+     */
     public function testShow(): void
     {
         $response = $this->get('/composer/' . static::$testComposer['id']);
@@ -46,7 +49,9 @@ class ComposerTest extends AbstractApiTest
         $json = json_decode($response->getContent(), true);
     }
 
-    #[Depends('testCreate')]
+    /**
+     * @depends testCreate
+     */
     public function testUpdate(): void
     {
         static::$testComposer['firstName'] = 'Wolfgang Amadeus';
@@ -58,7 +63,9 @@ class ComposerTest extends AbstractApiTest
         $this->assertEquals(static::$testComposer, $json);
     }
 
-    #[Depends('testCreate')]
+    /**
+     * @depends testCreate
+     */
     public function testDelete(): void
     {
         $response = $this->delete('/composer/' . static::$testComposer['id']);

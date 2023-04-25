@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AbstractApiTest extends WebTestCase
 {
-    protected $client;
+    protected \Symfony\Bundle\FrameworkBundle\KernelBrowser $client;
     protected function setUp(): void
     {
         $this->client = static::createClient();
