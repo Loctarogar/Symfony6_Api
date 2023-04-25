@@ -2,12 +2,14 @@
 
 namespace App\Tests;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class AbstractApiTest extends WebTestCase
+abstract class AbstractApiTest extends WebTestCase
 {
-    protected \Symfony\Bundle\FrameworkBundle\KernelBrowser $client;
+    protected KernelBrowser $client;
+
     protected function setUp(): void
     {
         $this->client = static::createClient();
@@ -24,7 +26,7 @@ class AbstractApiTest extends WebTestCase
 
     protected function post(string $uri, array $data): Response
     {
-        $this->client->request('POST', '/composer', [], [], [
+        $this->client->request('POST', $uri, [], [], [
             'HTTP_ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ], json_encode($data));

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\ComposerRepository;
@@ -27,10 +26,10 @@ class Composer
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
-    private ?\DateTimeImmutable $dateOfBbirth = null;
+    private ?\DateTimeImmutable $dateOfBirth = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $country = null;
+    #[ORM\Column(length: 2)]
+    private ?string $countryCode = null;
 
     #[ORM\OneToMany(mappedBy: 'composer', targetEntity: Symphony::class, orphanRemoval: true)]
     #[Ignore]
@@ -70,26 +69,26 @@ class Composer
         return $this;
     }
 
-    public function getDateOfBbirth(): ?\DateTimeImmutable
+    public function getDateOfBirth(): ?\DateTimeImmutable
     {
-        return $this->dateOfBbirth;
+        return $this->dateOfBirth;
     }
 
-    public function setDateOfBbirth(\DateTimeImmutable $dateOfBbirth): self
+    public function setDateOfBirth(\DateTimeImmutable $dateOfBirth): self
     {
-        $this->dateOfBbirth = $dateOfBbirth;
+        $this->dateOfBirth = $dateOfBirth;
 
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getCountryCode(): ?string
     {
-        return $this->country;
+        return $this->countryCode;
     }
 
-    public function setCountry(string $country): self
+    public function setCountryCode(string $countryCode): self
     {
-        $this->country = $country;
+        $this->countryCode = $countryCode;
 
         return $this;
     }
